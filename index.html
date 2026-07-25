@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prakriti Care is a tech-enabled social impact platform for 24/7 street animal rescue, veterinary coordination, and community-driven tree plantation drives.">
+  <title>Prakriti Care - Animal Rescue & Eco-Restoration Network</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS for Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css?v=1.0.1">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Ambient Audio / Chime Support -->
+  <audio id="success-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+  <!-- Nature Ambient Particle Canvas -->
+  <canvas id="nature-canvas"></canvas>
+
+  <!-- 1. Sticky Navigation Header -->
+  <header class="main-header">
+    <div class="header-container">
+      <a href="#home" class="logo">
+        <!-- Paw Print + Oak Leaf SVG Icon -->
+        <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background glow -->
+          <defs>
+            <radialGradient id="logo-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#1B4D3E" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#1B4D3E" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="50" cy="50" r="45" fill="url(#logo-glow)"/>
+          <!-- Leaf base and main vein -->
+          <path d="M50 85 C42 65 30 55 30 40 C30 25 45 15 50 10 C55 15 70 25 70 40 C70 55 58 65 50 85 Z" fill="#1B4D3E" stroke="#F0F7F4" stroke-width="2"/>
+          <path d="M50 85 C50 60 50 30 50 10" stroke="#F0F7F4" stroke-width="1.5" stroke-dasharray="1 1"/>
+          <!-- Paw Toe Beans (integrated organically into the leaf lobes) -->
+          <circle cx="36" cy="30" r="5.5" fill="#D97706" />
+          <circle cx="45" cy="22" r="5.5" fill="#D97706" />
+          <circle cx="55" cy="22" r="5.5" fill="#D97706" />
+          <circle cx="64" cy="30" r="5.5" fill="#D97706" />
+          <!-- Paw Center Pad (styled like a mini oak leaf inside the main path) -->
+          <path d="M50 58 C44 50 42 42 50 38 C58 42 56 50 50 58 Z" fill="#D97706"/>
+        </svg>
+        <span class="logo-text">Prakriti <span class="logo-accent">Care</span></span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#causes" class="nav-link">Our Causes</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#map-section" class="nav-link">Rescue Map</a>
+        <a href="#sos-section" class="nav-link">SOS Portal</a>
+        <a href="#contact-form" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="#sos-section" class="btn btn-primary nav-cta">
+          <i data-lucide="alert-triangle" class="icon-pulse"></i>
+          <span>Report Rescue / Donate</span>
+        </a>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" id="menu-icon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Overlay Navigation -->
+  <div class="mobile-nav-overlay">
+    <nav class="mobile-nav-links">
+      <a href="#home" class="mobile-link">Home</a>
+      <a href="#about" class="mobile-link">About Us</a>
+      <a href="#causes" class="mobile-link">Our Causes</a>
+      <a href="#services" class="mobile-link">Services</a>
+      <a href="#map-section" class="mobile-link">Rescue Map</a>
+      <a href="#sos-section" class="mobile-link">SOS Portal</a>
+      <a href="#contact-form" class="mobile-link">Contact</a>
+      <a href="#sos-section" class="btn btn-primary nav-cta mobile-cta">
+        <i data-lucide="alert-triangle"></i> Report Rescue / Donate
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main Container -->
+  <main id="home">
+
+    <!-- 2. Immersive Hero Section -->
+    <section class="hero-section">
+      <!-- Looping Video Backdrop -->
+      <div class="video-container">
+        <video autoplay muted loop playsinline class="hero-video" id="bg-video">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+          <!-- Fallback image set in CSS -->
+        </video>
+        <div class="video-overlay"></div>
+      </div>
+
+      <div class="hero-content-wrapper container-grid">
+        <!-- Left Column: Headline and Call-To-Action -->
+        <div class="hero-text-panel reveal">
+          <span class="badge badge-emerald">
+            <i data-lucide="shield-check"></i> Pan-India Helpline: 1800-123-4567
+          </span>
+          <h1 class="hero-title">Protecting Wildlife, <span class="highlight-text">Healing the Planet</span>, Empowering Communities.</h1>
+          <p class="hero-subtitle">Connecting street animal rescue alerts with local vet networks and tree-plantation drives. Base Operations in Indore & Bilaspur, active across 15+ Indian States.</p>
+          
+          <div class="hero-cta-group">
+            <a href="#sos-section" class="btn btn-danger btn-lg">
+              <i data-lucide="phone-call" class="icon-shake"></i>
+              <span>Report Injured Animal</span>
+            </a>
+            <a href="#causes" class="btn btn-outline btn-lg">
+              <i data-lucide="sprout"></i>
+              <span>Adopt / Sponsor a Tree</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive 3D/Glass active rescue telemetry card -->
+        <div class="hero-graphic-panel reveal">
+          <div class="glass-card telemetry-card">
+            <div class="telemetry-header">
+              <div class="live-dot-container">
+                <span class="blinking-dot"></span>
+                <span class="live-tag">LIVE RESCUE DISPATCH</span>
+              </div>
+              <span class="incident-id">#PC-9804</span>
+            </div>
+            
+            <div class="telemetry-body">
+              <div class="animal-avatar-container">
+                <div class="animal-icon-wrapper">
+                  <i data-lucide="dog" class="animal-icon"></i>
+                </div>
+                <div class="animal-details">
+                  <h3>Injured Stray Dog</h3>
+                  <p><i data-lucide="map-pin"></i> Vijay Nagar, Near C21 Mall, Indore</p>
+                </div>
+              </div>
+
+              <div class="telemetry-info-grid">
+                <div class="info-item">
+                  <span class="info-label">Severity</span>
+                  <span class="info-value text-critical">Critical (Injury)</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Reported</span>
+                  <span class="info-value">3 mins ago</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Vet Network</span>
+                  <span class="info-value">Indore Vet Hospital</span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">ETA</span>
+                  <span class="info-value text-amber">6 mins</span>
+                </div>
+              </div>
+
+              <!-- Dispatch Progress Tracker -->
+              <div class="dispatch-tracker">
+                <div class="tracker-steps">
+                  <div class="step completed">
+                    <div class="step-dot"><i data-lucide="check"></i></div>
+                    <span class="step-label">Reported</span>
+                  </div>
+                  <div class="step active">
+                    <div class="step-dot"><i data-lucide="truck"></i></div>
+                    <span class="step-label">En Route</span>
+                  </div>
+                  <div class="step">
+                    <div class="step-dot"><i data-lucide="heart"></i></div>
+                    <span class="step-label">Treated</span>
+                  </div>
+                </div>
+                <div class="tracker-line">
+                  <div class="line-progress" style="width: 50%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="telemetry-footer">
+              <button class="btn btn-sm btn-glass w-full" id="track-dispatch-btn">
+                <i data-lucide="navigation"></i> Track Rescue Vehicle
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Live Impact Metrics Counter -->
+    <section class="impact-metrics-section" id="impact">
+      <div class="container">
+        <div class="glass-container metrics-bar reveal">
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon-box">
+                <i data-lucide="heart-handshake"></i>
+              </div>
+              <div class="metric-numbers">
+                <span class="counter" data-target="12400">0</span><span class="plus">+</span>
+              </div>
+              <span class="metric-label">Animals Rescued & Treated</span>
+            </div>
+            
+            <div class="metric-card">
+              <div class="metric-icon-box">
+                <i data-lucide="leaf"></i>
+              </div>
+              <div class="metric-numbers">
+                <span class="counter" data-target="50000">0</span><span class="plus">+</span>
+              </div>
+              <span class="metric-label">Saplings Planted & Geo-Tagged</span>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-box">
+                <i data-lucide="stethoscope"></i>
+              </div>
+              <div class="metric-numbers">
+                <span class="counter" data-target="350">0</span><span class="plus">+</span>
+              </div>
+              <span class="metric-label">Verified Vet Partners</span>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-box">
+                <i data-lucide="map"></i>
+              </div>
+              <div class="metric-numbers">
+                <span class="counter" data-target="15">0</span><span class="plus">+</span>
+              </div>
+              <span class="metric-label">Active Indian States</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- *** ABOUT US SECTION *** -->
+    <section class="about-section" id="about">
+      <div class="container">
+
+        <!-- Section Badge -->
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">Our Story</span>
+          <h2 class="section-title">From Indore's Streets<br>to India's Heart</h2>
+          <p class="section-subtitle">A grassroots movement that turned compassion into a tech-powered rescue network.</p>
+        </div>
+
+        <div class="about-layout">
+
+          <!-- Left: Storytelling Column -->
+          <div class="about-story reveal">
+            <div class="story-timeline">
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <span class="timeline-year">2019</span>
+                  <h4>The Spark in Indore</h4>
+                  <p>A group of animal lovers in Indore witnessed a stray dog die on the roadside because no vet could be reached in time. That night, Prakriti Care was conceived — not as an organisation, but as a promise.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <span class="timeline-year">2021</span>
+                  <h4>Expanding to Bilaspur</h4>
+                  <p>Our volunteer-led rescue network crossed state lines into Bilaspur, Chhattisgarh, establishing the first multi-city stray animal ambulance coordination system in Central India.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot dot-accent"></div>
+                <div class="timeline-content">
+                  <span class="timeline-year">2024</span>
+                  <h4>Active in 15+ Indian States</h4>
+                  <p>Today, 1,200+ trained citizen responders, 84 verified vet partners, and a real-time dispatch tracker form our backbone — connecting isolated animal lovers into one unified compassion network.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="about-stats-row">
+              <div class="about-stat">
+                <span class="about-stat-number">6+</span>
+                <span class="about-stat-label">Years Active</span>
+              </div>
+              <div class="about-stat">
+                <span class="about-stat-number">4,800+</span>
+                <span class="about-stat-label">Lives Saved</span>
+              </div>
+              <div class="about-stat">
+                <span class="about-stat-number">₹28L+</span>
+                <span class="about-stat-label">Raised & Deployed</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: 3 Pillar Cards -->
+          <div class="about-pillars reveal">
+            <p class="pillars-intro">Everything we do rests on three unshakeable pillars of action:</p>
+
+            <div class="pillar-card">
+              <div class="pillar-icon-wrap fauna">
+                <span class="pillar-emoji">🐾</span>
+              </div>
+              <div class="pillar-content">
+                <h4>Fauna Care</h4>
+                <p>Mitigating animal-vehicle conflicts, providing on-street emergency veterinary response, and running sterilization drives that reduce stray populations humanely.</p>
+                <div class="pillar-tags">
+                  <span>Emergency Dispatch</span>
+                  <span>Sterilization</span>
+                  <span>Street Medicine</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pillar-card">
+              <div class="pillar-icon-wrap flora">
+                <span class="pillar-emoji">🌱</span>
+              </div>
+              <div class="pillar-content">
+                <h4>Flora Restoration</h4>
+                <p>Building urban mini-forests using Japan's Miyawaki method — dense, self-sustaining native forest patches that restore ecological balance in as little as 10 years.</p>
+                <div class="pillar-tags">
+                  <span>Miyawaki Method</span>
+                  <span>Native Species</span>
+                  <span>Carbon Sequestration</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pillar-card">
+              <div class="pillar-icon-wrap network">
+                <span class="pillar-emoji">🤝</span>
+              </div>
+              <div class="pillar-content">
+                <h4>Citizen Network</h4>
+                <p>Empowering local shopkeepers, school students, and youth volunteers as active street guardians who form the first line of response for animals in distress.</p>
+                <div class="pillar-tags">
+                  <span>Youth Volunteers</span>
+                  <span>Community Watch</span>
+                  <span>Skill Training</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section" id="how-it-works">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">Simple 3-Step Process</span>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle">Our tech-enabled network ensures rapid medical response and transparent tracking for every reported case.</p>
+        </div>
+        <div class="how-it-works-grid container-grid">
+          <div class="step-card glass-card reveal">
+            <div class="step-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80');">
+              <span class="step-badge">Step 1</span>
+            </div>
+            <div class="step-info">
+              <h3>Snap & Report Emergency</h3>
+              <p>Upload a photo and pin the GPS coordinates of the injured animal through our mobile-friendly SOS portal.</p>
+            </div>
+          </div>
+          <div class="step-card glass-card reveal">
+            <div class="step-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=600&q=80');">
+              <span class="step-badge">Step 2</span>
+            </div>
+            <div class="step-info">
+              <h3>Local Indian Vet Network Alerted</h3>
+              <p>Our system dispatches alerts to the nearest partner veterinarians and ambulance drivers in Indore & Bilaspur.</p>
+            </div>
+          </div>
+          <div class="step-card glass-card reveal">
+            <div class="step-img-wrapper" style="background-image: url('https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?auto=format&fit=crop&w=600&q=80');">
+              <span class="step-badge">Step 3</span>
+            </div>
+            <div class="step-info">
+              <h3>Real-time Rescue Tracking</h3>
+              <p>Track the dispatched rescue vehicle in real-time as they navigate to the location and administer emergency treatment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Key Initiatives / Causes -->
+    <section class="causes-section" id="causes">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">Our Core Initiatives</span>
+          <h2 class="section-title">Healing Ecosystems & Safeguarding Wildlife</h2>
+          <p class="section-subtitle">We believe in a holistic model of conservation where animal safety and environmental recovery go hand in hand.</p>
+        </div>
+
+        <div class="causes-grid container-grid">
+          <!-- Card 1: Project Jeev Raksha -->
+          <div class="cause-card glass-card reveal">
+            <div class="cause-img-wrapper" style="background-image: url('assets/jeev_raksha_rescue.png');">
+              <div class="image-overlay"></div>
+              <span class="cause-tag">Wildlife & Stray Rescue</span>
+            </div>
+            <div class="cause-info">
+              <h3>Project Jeev Raksha</h3>
+              <p>Providing 24/7 street animal medical response, veterinary ambulance dispatch, and temporary critical rehabilitation shelter for Indian street dogs and local wildlife.</p>
+              
+              <div class="cause-progress">
+                <div class="progress-details">
+                  <span>Funded: <strong>₹6,22,500</strong></span>
+                  <span>Goal: <strong>₹7,50,000</strong></span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill" style="width: 83%;"></div>
+                </div>
+                <div class="progress-percentage">83% Completed</div>
+              </div>
+              
+              <button class="btn btn-primary w-full support-cause-btn" data-cause="Project Jeev Raksha">
+                <i data-lucide="heart"></i> Support Cause
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Project Urban Forest -->
+          <div class="cause-card glass-card reveal">
+            <div class="cause-img-wrapper" style="background-image: url('assets/urban_forest_planting.png');">
+              <div class="image-overlay"></div>
+              <span class="cause-tag">Eco-Restoration</span>
+            </div>
+            <div class="cause-info">
+              <h3>Project Urban Forest</h3>
+              <p>Reclaiming empty urban patches in Indore and Bilaspur to plant native, indigenous trees like Neem, Peepal, and Banyan, each geo-tagged so that sponsors can track growth.</p>
+              
+              <div class="cause-progress">
+                <div class="progress-details">
+                  <span>Planted: <strong>8,200</strong></span>
+                  <span>Goal: <strong>10,000 Trees</strong></span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill" style="width: 82%;"></div>
+                </div>
+                <div class="progress-percentage">82% Completed</div>
+              </div>
+              
+              <button class="btn btn-primary w-full support-cause-btn" data-cause="Project Urban Forest">
+                <i data-lucide="sprout"></i> Sponsor Tree (₹150/Sapling)
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: Project Paws & Warmth -->
+          <div class="cause-card glass-card reveal">
+            <div class="cause-img-wrapper" style="background-image: url('assets/paws_warmth_shelter.png');">
+              <div class="image-overlay"></div>
+              <span class="cause-tag">Winter Comfort</span>
+            </div>
+            <div class="cause-info">
+              <h3>Project Paws & Warmth</h3>
+              <p>Collaborating with local volunteers to design insulated water-resistant shelters and distribute highly reflective safety collars to Indian stray animals to prevent nighttime road accidents.</p>
+              
+              <div class="cause-progress">
+                <div class="progress-details">
+                  <span>Funded: <strong>₹2,60,000</strong></span>
+                  <span>Goal: <strong>₹4,00,000</strong></span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+                <div class="progress-percentage">65% Completed</div>
+              </div>
+              
+              <button class="btn btn-primary w-full support-cause-btn" data-cause="Project Paws & Warmth">
+                <i data-lucide="gift"></i> Gift a Collar & Shelter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- *** SERVICES CATALOG SECTION *** -->
+    <section class="services-section" id="services">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">What We Offer</span>
+          <h2 class="section-title">Services You Can Request</h2>
+          <p class="section-subtitle">Beyond emergency rescue, we offer structured community services available to individuals, schools, and municipal bodies across India.</p>
+        </div>
+
+        <div class="services-grid reveal">
+
+          <!-- Service 1: Reflective Collars -->
+          <div class="service-card">
+            <div class="service-img-banner" style="background-image: url('https://images.unsplash.com/photo-1601758125946-6ec2ef64daf8?auto=format&fit=crop&w=600&q=80');">
+              <span class="service-img-tag" style="background: rgba(217,119,6,0.9);">Free Service</span>
+            </div>
+            <div class="service-icon-wrap" style="background: rgba(217,119,6,0.1); color: #D97706;">
+              <i data-lucide="tag"></i>
+            </div>
+            <div class="service-body">
+              <h3>Free Reflective Collars</h3>
+              <p>Request high-visibility reflective collars for stray animals in your locality. Each collar reduces night-time road accidents and helps identify vaccinated animals.</p>
+              <ul class="service-features">
+                <li><i data-lucide="check-circle"></i> Delivered to your locality</li>
+                <li><i data-lucide="check-circle"></i> QR-tagged for rescue ID</li>
+                <li><i data-lucide="check-circle"></i> Pan-India coverage</li>
+              </ul>
+            </div>
+            <a href="#sos-section" class="btn service-cta service-cta--orange"><i data-lucide="arrow-right"></i> Request Collars</a>
+          </div>
+
+          <!-- Service 2: Miyawaki Consulting -->
+          <div class="service-card service-card--featured">
+            <div class="service-img-banner" style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80');">
+              <span class="service-img-tag" style="background: rgba(27,77,62,0.9);">★ Most Popular</span>
+            </div>
+            <div class="service-icon-wrap" style="background: rgba(27,77,62,0.1); color: #1B4D3E;">
+              <i data-lucide="trees"></i>
+            </div>
+            <div class="service-body">
+              <h3>Miyawaki Plantation Consulting</h3>
+              <p>Our certified green-mapping team visits your community space, school, or society and designs a dense, native Miyawaki forest blueprint — with full planting support.</p>
+              <ul class="service-features">
+                <li><i data-lucide="check-circle"></i> Site survey &amp; soil analysis</li>
+                <li><i data-lucide="check-circle"></i> Native species selection</li>
+                <li><i data-lucide="check-circle"></i> 2-year growth monitoring</li>
+              </ul>
+            </div>
+            <a href="#contact-form" class="btn service-cta service-cta--orange"><i data-lucide="arrow-right"></i> Request Consultation</a>
+          </div>
+
+          <!-- Service 3: Sterilization Drives -->
+          <div class="service-card">
+            <div class="service-img-banner" style="background-image: url('https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&w=600&q=80');">
+              <span class="service-img-tag" style="background: rgba(16,185,129,0.9);">Municipal Partnership</span>
+            </div>
+            <div class="service-icon-wrap" style="background: rgba(16,185,129,0.1); color: #10b981;">
+              <i data-lucide="heart-handshake"></i>
+            </div>
+            <div class="service-body">
+              <h3>Stray Sterilization Drives</h3>
+              <p>Connect your locality with our vetted municipal network for humane Animal Birth Control (ABC) drives, coordinated with local government veterinary departments.</p>
+              <ul class="service-features">
+                <li><i data-lucide="check-circle"></i> Govt-approved ABC protocol</li>
+                <li><i data-lucide="check-circle"></i> Post-op recovery care</li>
+                <li><i data-lucide="check-circle"></i> Digital status tracking</li>
+              </ul>
+            </div>
+            <a href="#contact-form" class="btn service-cta service-cta--orange"><i data-lucide="arrow-right"></i> Connect Your Area</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Rescue Map Section -->
+    <section class="map-section" id="map-section">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">Live Activity Mapping</span>
+          <h2 class="section-title">Real-Time Network Telemetry</h2>
+          <p class="section-subtitle">Visualizing active emergency rescues, partner veterinary clinics, and geo-tagged community tree plantation sites.</p>
+        </div>
+
+        <div class="map-wrapper glass-card reveal">
+          <!-- Control Panel Overlay for Map -->
+          <div class="map-overlay-panel">
+            <h4>Filter Live Network</h4>
+            <div class="filter-options">
+              <label class="filter-item">
+                <input type="checkbox" id="filter-rescue" checked>
+                <span class="custom-checkbox cb-rescue"></span>
+                <span class="filter-label"><i data-lucide="alert-circle" class="text-critical"></i> Active Rescues</span>
+              </label>
+              <label class="filter-item">
+                <input type="checkbox" id="filter-vet" checked>
+                <span class="custom-checkbox cb-vet"></span>
+                <span class="filter-label"><i data-lucide="crosshair" class="text-emerald"></i> Vet Partners</span>
+              </label>
+              <label class="filter-item">
+                <input type="checkbox" id="filter-forest" checked>
+                <span class="custom-checkbox cb-forest"></span>
+                <span class="filter-label"><i data-lucide="sprout" class="text-amber"></i> Plantations</span>
+              </label>
+            </div>
+            
+            <div class="map-activity-feed">
+              <h5>Recent Reports</h5>
+              <div class="feed-list" id="map-feed-list">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Leaflet Map Container -->
+          <div id="leaflet-map"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Interactive Emergency SOS / Rescue Reporting Portal -->
+    <section class="sos-section" id="sos-section">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-danger">Emergency Dispatch Center</span>
+          <h2 class="section-title">Take Immediate Action</h2>
+          <p class="section-subtitle">Instantly submit local street animal rescue coordinates or sign up to volunteer in our rescue & plantation fleet.</p>
+        </div>
+
+        <div class="sos-wrapper glass-card reveal">
+          <!-- Dual Tab Selector -->
+          <div class="tab-selector">
+            <button class="tab-btn active" data-tab="emergency-tab">
+              <i data-lucide="alert-triangle"></i>
+              Report Emergency Rescue
+            </button>
+            <button class="tab-btn" data-tab="volunteer-tab">
+              <i data-lucide="users"></i>
+              Volunteer / Foster Registration
+            </button>
+          </div>
+
+          <!-- Tab Content 1: Emergency Rescue Form -->
+          <div class="tab-content active" id="emergency-tab">
+            <form id="emergency-rescue-form" class="sos-form">
+              <div class="form-grid">
+                
+                <div class="form-group col-12">
+                  <label class="form-label" for="animal-type">Category of Animal <span class="required">*</span></label>
+                  <div class="select-wrapper">
+                    <select id="animal-type" required class="form-input">
+                      <option value="" disabled selected>Select animal category</option>
+                      <option value="Dog">Stray Dog</option>
+                      <option value="Cat">Stray Cat</option>
+                      <option value="Bird">Bird (Peafowl, Pigeon, Eagle, etc.)</option>
+                      <option value="Reptile">Reptile / Snake</option>
+                      <option value="Large Animal">Cow / Donkey / Horse</option>
+                      <option value="Other">Other Wildlife</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="select-arrow"></i>
+                  </div>
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="injury-level">Injury Severity <span class="required">*</span></label>
+                  <div class="select-wrapper">
+                    <select id="injury-level" required class="form-input text-critical">
+                      <option value="" disabled selected>Select level</option>
+                      <option value="Critical" class="text-critical">🔴 Critical (Deep wounds, bleeding, fracture)</option>
+                      <option value="Moderate" class="text-amber">🟡 Moderate (Limping, skin disease, weakness)</option>
+                      <option value="Low" class="text-emerald">🟢 Low (Minor scratch, vaccine request)</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="select-arrow"></i>
+                  </div>
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="rescue-location">Rescue Coordinates / Location <span class="required">*</span></label>
+                  <div class="input-with-action">
+                    <input type="text" id="rescue-location" placeholder="e.g. Vijay Nagar, Near C21 Mall, Indore" required class="form-input">
+                    <button type="button" class="btn btn-secondary btn-sm" id="geolocate-btn" title="Use Current GPS Coordinates">
+                      <i data-lucide="map-pin"></i> <span>Pin GPS</span>
+                    </button>
+                  </div>
+                  <span class="location-status" id="gps-status"></span>
+                </div>
+
+                <div class="form-group col-12">
+                  <label class="form-label">Evidence / Photo Upload <span class="required">*</span></label>
+                  <div class="file-dropzone" id="photo-dropzone">
+                    <input type="file" id="rescue-photo" accept="image/*" class="file-input-hidden" required>
+                    <div class="dropzone-content" id="dropzone-default-text">
+                      <i data-lucide="upload-cloud" class="dropzone-icon"></i>
+                      <p class="dropzone-title">Drag & drop photo here or <span>browse files</span></p>
+                      <p class="dropzone-subtitle">Supported formats: JPG, PNG, WEBP (Max 5MB). Photo helps vet prepare.</p>
+                    </div>
+                    <div class="dropzone-preview hidden" id="dropzone-preview-container">
+                      <img src="" alt="Rescue Preview" class="preview-img" id="preview-img">
+                      <div class="preview-info">
+                        <span class="preview-name" id="preview-name">image.jpg</span>
+                        <span class="preview-size" id="preview-size">0 KB</span>
+                      </div>
+                      <button type="button" class="btn-remove-file" id="remove-file-btn">
+                        <i data-lucide="x"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-12">
+                  <label class="form-label" for="injury-desc">Condition Description & Milestones</label>
+                  <textarea id="injury-desc" placeholder="Describe the physical condition of the animal and any landmarks nearby to help our responders find it easily." rows="3" class="form-input"></textarea>
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="reporter-name">Reporter Name <span class="required">*</span></label>
+                  <input type="text" id="reporter-name" placeholder="Your Name" required class="form-input">
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="reporter-phone">Reporter Contact Number <span class="required">*</span></label>
+                  <input type="tel" id="reporter-phone" placeholder="10-digit mobile number" required class="form-input">
+                </div>
+
+                <div class="form-group col-12">
+                  <button type="submit" class="btn btn-danger btn-lg w-full form-submit-btn">
+                    <i data-lucide="send" class="icon-pulse"></i> Submit Emergency SOS Alert
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+          <!-- Tab Content 2: Volunteer Registration Form -->
+          <div class="tab-content" id="volunteer-tab">
+            <form id="volunteer-form" class="sos-form">
+              <div class="form-grid">
+                
+                <div class="form-group col-6">
+                  <label class="form-label" for="volunteer-name">Full Name <span class="required">*</span></label>
+                  <input type="text" id="volunteer-name" placeholder="Full Name" required class="form-input">
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="volunteer-email">Email Address <span class="required">*</span></label>
+                  <input type="email" id="volunteer-email" placeholder="Email Address" required class="form-input">
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="volunteer-phone">Contact Number <span class="required">*</span></label>
+                  <input type="tel" id="volunteer-phone" placeholder="Contact number" required class="form-input">
+                </div>
+
+                <div class="form-group col-6">
+                  <label class="form-label" for="volunteer-city">City <span class="required">*</span></label>
+                  <input type="text" id="volunteer-city" placeholder="e.g. New Delhi, Mumbai" required class="form-input">
+                </div>
+
+                <div class="form-group col-12">
+                  <label class="form-label">Areas of Interest (Select multiple) <span class="required">*</span></label>
+                  <div class="interest-checkbox-grid">
+                    <label class="checkbox-card">
+                      <input type="checkbox" name="interest" value="Rescue Volunteer">
+                      <div class="checkbox-card-content">
+                        <i data-lucide="ambulance"></i>
+                        <span>Rescue Dispatch</span>
+                      </div>
+                    </label>
+                    <label class="checkbox-card">
+                      <input type="checkbox" name="interest" value="Foster Home">
+                      <div class="checkbox-card-content">
+                        <i data-lucide="home"></i>
+                        <span>Foster Home Support</span>
+                      </div>
+                    </label>
+                    <label class="checkbox-card">
+                      <input type="checkbox" name="interest" value="Tree Plantation">
+                      <div class="checkbox-card-content">
+                        <i data-lucide="sprout"></i>
+                        <span>Tree Plantation Drives</span>
+                      </div>
+                    </label>
+                    <label class="checkbox-card">
+                      <input type="checkbox" name="interest" value="Social Media & Tech">
+                      <div class="checkbox-card-content">
+                        <i data-lucide="code"></i>
+                        <span>Tech & Marketing</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group col-12">
+                  <label class="form-label" for="volunteer-availability">Weekly Availability <span class="required">*</span></label>
+                  <div class="select-wrapper">
+                    <select id="volunteer-availability" required class="form-input">
+                      <option value="" disabled selected>Select availability</option>
+                      <option value="Weekends Only">Weekends Only (5-10 hours)</option>
+                      <option value="Weekdays Only">Weekdays Only (5-10 hours)</option>
+                      <option value="Flexible / Full-time">Flexible / Full-time</option>
+                      <option value="Occasional Drives">Occasional Drives & Events</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="select-arrow"></i>
+                  </div>
+                </div>
+
+                <div class="form-group col-12">
+                  <button type="submit" class="btn btn-primary btn-lg w-full form-submit-btn">
+                    <i data-lucide="check-circle"></i> Register as Volunteer
+                  </button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Indian Partner Network Section -->
+    <section class="partner-network-section" id="partners">
+      <div class="container">
+        <div class="section-header text-center reveal">
+          <span class="badge badge-emerald">Trusted Collaborations</span>
+          <h2 class="section-title">Our Indian Partner Network</h2>
+          <p class="section-subtitle">Working hand-in-hand with municipal bodies, veterinary colleges, and wildlife organizations.</p>
+        </div>
+        <div class="partner-strip-wrapper reveal">
+          <div class="partner-strip">
+            <div class="partner-logo-item">
+              <i data-lucide="building-2"></i>
+              <span>Indore Municipal Corporation</span>
+            </div>
+            <div class="partner-logo-item">
+              <i data-lucide="building"></i>
+              <span>Bilaspur Nagar Nigam</span>
+            </div>
+            <div class="partner-logo-item">
+              <i data-lucide="graduation-cap"></i>
+              <span>M.P. Veterinary College</span>
+            </div>
+            <div class="partner-logo-item">
+              <i data-lucide="shield"></i>
+              <span>C.G. Wildlife Department</span>
+            </div>
+            <div class="partner-logo-item">
+              <i data-lucide="heart"></i>
+              <span>Indore Stray Aid</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Trust Badges Section -->
+    <section class="trust-badges-section">
+      <div class="container">
+        <div class="badges-wrapper reveal">
+          <div class="badge-card gold-metallic">
+            <div class="seal-outer">
+              <div class="seal-inner">
+                <i data-lucide="award"></i>
+                <span>SECTION 8</span>
+              </div>
+            </div>
+            <div class="badge-info">
+              <h4>Section 8 Certified</h4>
+              <p>Registered Non-Profit Organisation (Govt. of India)</p>
+            </div>
+          </div>
+
+          <div class="badge-card gold-metallic">
+            <div class="seal-outer">
+              <div class="seal-inner">
+                <i data-lucide="percent"></i>
+                <span>80G EXEMPT</span>
+              </div>
+            </div>
+            <div class="badge-info">
+              <h4>80G Tax Exemption</h4>
+              <p>All contributions are 50% tax exempt under Sec 80G</p>
+            </div>
+          </div>
+
+          <div class="badge-card gold-metallic">
+            <div class="seal-outer">
+              <div class="seal-inner">
+                <i data-lucide="shield-check"></i>
+                <span>12A REGISTERED</span>
+              </div>
+            </div>
+            <div class="badge-info">
+              <h4>12A Registered</h4>
+              <p>Compliant with standard non-profit financial audits</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- *** CONTACT US SECTION *** -->
+    <section class="contact-section" id="contact-form">
+      <div class="container">
+        <div class="contact-layout">
+
+          <!-- Left: Info Panel -->
+          <div class="contact-info reveal">
+            <span class="badge badge-emerald">Get In Touch</span>
+            <h2 class="section-title" style="color: var(--text-white); text-align:left; margin-bottom:1rem;">Let's Build a<br><span style="color: var(--accent-terracotta);">Greener India</span><br>Together</h2>
+            <p style="color: var(--accent-sage); line-height:1.7; margin-bottom:2rem; opacity:0.85;">Whether you want to partner with us, sponsor a cause, pitch a media collaboration, or simply say hello — we're reachable and responsive.</p>
+
+            <div class="contact-details">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i data-lucide="mail"></i></div>
+                <div>
+                  <strong>Email Us</strong>
+                  <a href="mailto:help@prakriticare.org">help@prakriticare.org</a>
+                </div>
+              </div>
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i data-lucide="phone"></i></div>
+                <div>
+                  <strong>Pan-India Helpline</strong>
+                  <a href="tel:18001234567">1800-123-4567 (Toll Free)</a>
+                </div>
+              </div>
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i data-lucide="map-pin"></i></div>
+                <div>
+                  <strong>Base Operations</strong>
+                  <span>Indore, M.P. & Bilaspur, C.G.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-social">
+              <p>Follow our rescue stories:</p>
+              <div class="social-links">
+                <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+                <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Light-themed Contact Form -->
+          <div class="contact-form-card reveal">
+            <form id="contact-inquiry-form">
+              <h3 class="contact-form-title">Send Us a Message</h3>
+
+              <div class="form-group" style="margin-bottom:1.25rem;">
+                <label class="contact-label" for="inquiry-type">Inquiry Category <span class="required">*</span></label>
+                <div class="select-wrapper">
+                  <select id="inquiry-type" required class="contact-input">
+                    <option value="" disabled selected>Select inquiry type</option>
+                    <option value="Partner NGO">🤝 Become a Partner NGO</option>
+                    <option value="Sponsor CSR">💼 Sponsor / CSR Collaboration</option>
+                    <option value="Media Press">📰 Media & Press Inquiry</option>
+                    <option value="Miyawaki">🌱 Miyawaki Plantation Request</option>
+                    <option value="Feedback">💬 General Feedback</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <i data-lucide="chevron-down" class="contact-select-arrow"></i>
+                </div>
+              </div>
+
+              <div class="contact-form-grid">
+                <div class="form-group">
+                  <label class="contact-label" for="contact-name">Full Name <span class="required">*</span></label>
+                  <input type="text" id="contact-name" required class="contact-input" placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                  <label class="contact-label" for="contact-org">Organisation / City</label>
+                  <input type="text" id="contact-org" class="contact-input" placeholder="Organisation or city name">
+                </div>
+                <div class="form-group">
+                  <label class="contact-label" for="contact-email">Email Address <span class="required">*</span></label>
+                  <input type="email" id="contact-email" required class="contact-input" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                  <label class="contact-label" for="contact-phone">Phone Number</label>
+                  <input type="tel" id="contact-phone" class="contact-input" placeholder="10-digit mobile number">
+                </div>
+                <div class="form-group contact-full">
+                  <label class="contact-label" for="contact-message">Your Message <span class="required">*</span></label>
+                  <textarea id="contact-message" required class="contact-input" rows="5" placeholder="Tell us about your idea, requirement, or inquiry in detail..."></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg w-full contact-submit-btn">
+                <i data-lucide="send"></i> Send Message
+              </button>
+
+              <p class="contact-disclaimer">We respond within 24-48 hours on working days. For animal emergencies call <strong>1800-123-4567</strong>.</p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Navigation Footer -->
+  <footer class="main-footer" id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Footer Column 1: Info -->
+        <div class="footer-col brand-col">
+          <div class="footer-logo">
+            <!-- Logo duplication for consistency -->
+            <svg class="logo-icon-sm" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" fill="rgba(27,77,62,0.5)"/>
+              <path d="M50 85 C42 65 30 55 30 40 C30 25 45 15 50 10 C55 15 70 25 70 40 C70 55 58 65 50 85 Z" fill="#1B4D3E" stroke="#F0F7F4" stroke-width="2"/>
+              <circle cx="36" cy="30" r="5.5" fill="#D97706" />
+              <circle cx="45" cy="22" r="5.5" fill="#D97706" />
+              <circle cx="55" cy="22" r="5.5" fill="#D97706" />
+              <circle cx="64" cy="30" r="5.5" fill="#D97706" />
+              <path d="M50 58 C44 50 42 42 50 38 C58 42 56 50 50 58 Z" fill="#D97706"/>
+            </svg>
+            <span class="logo-text">Prakriti <span class="logo-accent">Care</span></span>
+          </div>
+          <p class="footer-desc">Prakriti Care is building a digital ecosystem to connect emergency street animal rescue responders, veterinary practitioners, and volunteer-led urban forestry networks.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"><i data-lucide="facebook"></i></a>
+            <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+            <a href="#" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+          </div>
+        </div>
+
+        <!-- Footer Column 2: Quick Links -->
+        <div class="footer-col links-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links-list">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#causes">Our Causes</a></li>
+            <li><a href="#map-section">Rescue Map</a></li>
+            <li><a href="#impact">Live Impact</a></li>
+            <li><a href="#sos-section">SOS Portal</a></li>
+          </ul>
+        </div>
+
+        <!-- Footer Column 3: Contact Info -->
+        <div class="footer-col contact-col">
+          <h4>Emergency Contact</h4>
+          <ul class="footer-contact-list">
+            <li>
+              <i data-lucide="mail"></i>
+              <a href="mailto:help@prakriticare.org">help@prakriticare.org</a>
+            </li>
+            <li>
+              <i data-lucide="phone"></i>
+              <a href="tel:18001234567">1800-123-4567 (Pan-India Helpline)</a>
+            </li>
+            <li>
+              <i data-lucide="map-pin"></i>
+              <span>Base Operations: Indore & Bilaspur, India</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Footer Column 4: Newsletter -->
+        <div class="footer-col newsletter-col">
+          <h4>Stay Updated</h4>
+          <p>Join our newsletter to receive plantation drive updates and rescue success stories.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <div class="input-group">
+              <input type="email" placeholder="Your Email Address" required class="form-input">
+              <button type="submit" class="btn btn-primary" aria-label="Subscribe">
+                <i data-lucide="chevron-right"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Prakriti Care Foundation. All rights reserved. Created with dedication to eco-harmony.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Track Dispatch Modal (Simulated Live Tracker) -->
+  <div class="modal-overlay" id="tracker-modal">
+    <div class="modal-content glass-card">
+      <button class="modal-close" id="close-tracker-modal"><i data-lucide="x"></i></button>
+      <div class="modal-header">
+        <h3><i data-lucide="navigation" class="icon-pulse"></i> Live Rescue Telemetry</h3>
+        <p>Incident #PC-9804 &mdash; Injured Stray Dog</p>
+      </div>
+      <div class="modal-body">
+        <div class="modal-map-container">
+          <!-- Animated visual mock map representing the rescue tracking -->
+          <div class="mock-map">
+            <div class="radar-ping"></div>
+            <div class="route-line-svg">
+              <svg width="100%" height="100%" viewBox="0 0 300 150">
+                <path d="M 30,120 Q 120,40 180,110 T 270,30" fill="none" stroke="rgba(217, 119, 6, 0.4)" stroke-width="4" stroke-dasharray="8 4"/>
+                <path id="truck-path" d="M 30,120 Q 120,40 180,110 T 270,30" fill="none" stroke="#D97706" stroke-width="4" stroke-dasharray="300" stroke-dashoffset="300"/>
+              </svg>
+            </div>
+            <div class="map-node start-node" style="left: 30px; top: 120px;" title="Reporter Location">
+              <i data-lucide="map-pin" class="text-critical"></i>
+            </div>
+            <div class="map-node vet-node" style="left: 270px; top: 30px;" title="Metro Vet Hospital">
+              <i data-lucide="crosshair" class="text-emerald"></i>
+            </div>
+            <div class="moving-truck" id="moving-truck" style="left: 30px; top: 120px;">
+              <i data-lucide="truck"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="telemetry-status-panel">
+          <div class="status-indicator">
+            <span class="pulse-indicator"></span>
+            <h4>Rescuer Status: <span class="status-highlight text-amber" id="driver-status-text">Dispatching vehicle...</span></h4>
+          </div>
+          <p class="status-subtext" id="driver-subtext">Driver Rajesh Kumar has accepted the dispatch and is starting the engine.</p>
+          <div class="driver-profile">
+            <div class="driver-avatar">RK</div>
+            <div class="driver-meta">
+              <strong>Rajesh Kumar</strong>
+              <span>Volunteer Responder &bull; 84 Rescues Done</span>
+            </div>
+            <a href="tel:+919876543219" class="btn btn-secondary btn-sm"><i data-lucide="phone"></i> Call Rescuer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donation Support Cause Modal -->
+  <div class="modal-overlay" id="donation-modal">
+    <div class="modal-content glass-card">
+      <button class="modal-close" id="close-donation-modal"><i data-lucide="x"></i></button>
+      <div class="modal-header">
+        <h3 id="donation-cause-title"><i data-lucide="heart" class="text-critical"></i> Support Cause</h3>
+        <p>Your contribution directly saves lives and restores nature. Tax exemption benefits apply.</p>
+      </div>
+      <form id="donation-form">
+        <div class="modal-body">
+          <div class="donation-presets">
+            <button type="button" class="preset-btn" data-val="250">₹250</button>
+            <button type="button" class="preset-btn active" data-val="500">₹500</button>
+            <button type="button" class="preset-btn" data-val="1000">₹1,000</button>
+            <button type="button" class="preset-btn" data-val="2500">₹2,500</button>
+            <button type="button" class="preset-btn" data-val="custom">Custom</button>
+          </div>
+          
+          <div class="form-group custom-amount-group hidden" id="custom-amount-container">
+            <label class="form-label" for="custom-amount-val">Enter Custom Amount (₹)</label>
+            <input type="number" id="custom-amount-val" min="100" value="500" class="form-input">
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group col-12">
+              <label class="form-label" for="donor-name">Full Name <span class="required">*</span></label>
+              <input type="text" id="donor-name" required class="form-input" placeholder="Enter full name">
+            </div>
+            <div class="form-group col-12">
+              <label class="form-label" for="donor-email">Email Address <span class="required">*</span></label>
+              <input type="email" id="donor-email" required class="form-input" placeholder="email@example.com">
+            </div>
+            <div class="form-group col-12">
+              <label class="tax-checkbox-label">
+                <input type="checkbox" id="tax-receipt-required" checked>
+                <span>Request 80G Tax Exemption Certificate (India)</span>
+              </label>
+            </div>
+            <div class="form-group col-12 pan-number-group" id="pan-number-container">
+              <label class="form-label" for="pan-val">Permanent Account Number (PAN) <span class="required">*</span></label>
+              <input type="text" id="pan-val" class="form-input" placeholder="ABCDE1234F" style="text-transform: uppercase;">
+              <span class="input-hint">Required for generating 80G tax benefit certificate.</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary btn-lg w-full">
+            <i data-lucide="credit-card"></i> Proceed to Secure Payment
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Form Success Modal -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-content glass-card text-center success-modal-content">
+      <button class="modal-close" id="close-success-modal"><i data-lucide="x"></i></button>
+      <div class="success-animation-container">
+        <div class="success-checkmark">
+          <div class="check-icon">
+            <span class="icon-line line-tip"></span>
+            <span class="icon-line line-long"></span>
+            <div class="icon-circle"></div>
+            <div class="icon-fix"></div>
+          </div>
+        </div>
+      </div>
+      <h3 id="success-modal-title">Submission Successful!</h3>
+      <p id="success-modal-desc">Thank you for your valuable support. Our team has received your information.</p>
+      <div class="modal-success-details" id="success-modal-details">
+        <!-- Dynamic ticket details or confirmation keys -->
+      </div>
+      <button class="btn btn-primary btn-lg w-full" id="success-ok-btn">Awesome</button>
+    </div>
+  </div>
+
+  <!-- Leaflet JS for Interactive Map -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Custom JS -->
+  <script src="main.js?v=1.0.1"></script>
+</body>
+</html>
