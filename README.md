@@ -83,26 +83,6 @@ start index.html
 npx serve .
 ```
 
----
-
-## 🗺️ Map Coverage (Pan-India Network)
-
-| State | Rescue | Vet | Plantation |
-|---|---|---|---|
-| Madhya Pradesh | ✅ | ✅ | ✅ |
-| Chhattisgarh | ✅ | ✅ | ✅ |
-| Delhi NCR | ✅ | ✅ | ✅ |
-| Maharashtra | ✅ | ✅ | ✅ |
-| Karnataka | ✅ | ✅ | ✅ |
-| Tamil Nadu | ✅ | ✅ | — |
-| West Bengal | ✅ | — | ✅ |
-| Rajasthan | ✅ | ✅ | — |
-| Telangana | ✅ | — | ✅ |
-| Kerala | — | ✅ | ✅ |
-| Assam | ✅ | — | — |
-
----
-
 ## 🎨 Design System
 
 ```css
@@ -131,22 +111,3 @@ npx serve .
 11. **Trust Badges** — Section 8 / 80G / 12A certification seals
 12. **Contact** — General inquiry form (light themed)
 13. **Footer** — Links, contact info, newsletter signup
-
----
-
-## 🏛️ Organisation
-
-**Prakriti Care Foundation**
-- 📧 help@prakriticare.org
-- 📞 1800-123-4567 (Pan-India Toll Free)
-- 📍 Indore, M.P. & Bilaspur, C.G.
-
----
-
-## 📄 License
-
-This project is built for **InAmigos Foundation** as part of a social impact tech internship initiative.
-
----
-
-*Built with 💚 for the streets, forests, and the creatures that call them home.*
